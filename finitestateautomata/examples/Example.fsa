@@ -1,0 +1,4 @@
+finite state automaton Model {
+        A initial -- a ----> B final
+        B -- a;b --> A
+}

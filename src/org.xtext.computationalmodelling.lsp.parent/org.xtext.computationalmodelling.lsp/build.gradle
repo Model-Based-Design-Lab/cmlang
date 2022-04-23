@@ -1,0 +1,39 @@
+dependencies {
+	compile "org.eclipse.xtext:org.eclipse.xtext:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase:${xtextVersion}"
+	compile 'org.apache.commons:commons-math:2.0'
+}
+configurations {
+	mwe2 {
+		extendsFrom compile
+	}
+}
+
+dependencies {
+	mwe2 'org.eclipse.emf:org.eclipse.emf.mwe2.launch'
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.common.types:${xtextVersion}"
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.xtext.generator:${xtextVersion}"
+	mwe2 'org.eclipse.xtext:xtext-antlr-generator'
+}
+
+
+task generateXtextLanguageLSP(type: JavaExec) {
+	main = 'org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher'
+	classpath = configurations.mwe2
+	inputs.file "src/main/java/org/xtext/computationalmodelling/GenerateLanguagesLSP.mwe2"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/Dataflow.xtext"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/MaxPlusMatrix.xtext"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/FiniteStateAutomata.xtext"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/MarkovChains.xtext"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/RegularExpressions.xtext"
+	inputs.file "src/main/java/org/xtext/computationalmodelling/LinearTemporalLogic.xtext"
+	outputs.dir "src/main/xtext-gen"
+	args += "src/main/java/org/xtext/computationalmodelling/GenerateLanguagesLSP.mwe2"
+	args += "-p"
+	args += "rootPath=/${projectDir}/.."
+}
+
+
+generateXtext.dependsOn(generateXtextLanguageLSP)
+clean.dependsOn(cleanGenerateXtextLanguageLSP)
+eclipse.classpath.plusConfigurations += [configurations.mwe2]

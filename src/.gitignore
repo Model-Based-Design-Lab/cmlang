@@ -1,0 +1,11 @@
+/.metadata/
+.project
+.classpath
+.gradle
+.launch
+build
+src-gen
+xtend-gen
+xtext-gen
+bin
+generated

@@ -1,0 +1,82 @@
+grammar org.xtext.computationalmodelling.LinearTemporalLogic with org.eclipse.xtext.common.Terminals
+
+generate lineartemporallogic "http://www.xtext.org/computationalmodelling/LinearTemporalLogic"
+
+
+LTLModel:
+	'ltl' 'formula' name=LTLID '='
+	formula = LTLFormula	
+	('alphabet' alphabet = SetOfSymbols
+	)?
+	('where' (definitions += Definition )*
+	)?
+;
+
+Definition:
+	proposition = LTLID '=' symbols = SetOfSymbols
+;
+
+SetOfSymbols:
+	'{' (symbols += LTLID) (',' symbols += LTLID)* '}'
+;
+
+LTLFormula:
+	formula = LTLFormula1 
+	(
+		'or' 
+		alternatives += LTLFormula1 
+		('or' alternatives += LTLFormula1 )*
+	)?
+;
+
+LTLFormula1:
+	formula = LTLFormula2 
+	(
+		'and' 
+		alternatives += LTLFormula2 
+		('and' alternatives += LTLFormula2 )*
+	)?
+;
+
+
+LTLFormula2:
+		subexpression1 = LTLFormula3 ('U' subexpression2 = LTLFormula2)?
+;
+
+LTLFormula3:
+		subexpression1 = LTLFormula4 ('R' subexpression2 = LTLFormula3)?
+;
+
+LTLFormula4:
+		subexpression = LTLFormula5 ('=>' consequence = LTLFormula4)?
+;
+
+LTLFormula5:
+		('X' nextSubexpression = LTLFormula5) | 
+		('F' eventuallySubexpression = LTLFormula5) | 
+		('G' alwaysSubexpression = LTLFormula5) |
+		('not' notSubexpression = LTLFormula5) |
+		subexpression = LTLFormula6
+;
+
+LTLFormula6:
+		propositionExpression = PropositionExpression |
+		trueExpression = 'true' |
+		falseExpression = 'false' |
+		'(' expression = LTLFormula ')'
+;
+
+
+PropositionExpression:
+	Proposition
+;
+
+
+Proposition:
+	LTLID | STRING
+;
+
+terminal LTLID:
+	('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*
+;
+

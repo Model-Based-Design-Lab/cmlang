@@ -1,0 +1,32 @@
+dependencies {
+	compile project(':org.xtext.computationalmodelling.lsp')
+	compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}
+
+apply plugin: 'application'
+mainClassName = "org.eclipse.xtext.ide.server.ServerLauncher"
+
+startScripts {
+	applicationName = 'computational-modelling-language-server-stdio'
+}
+
+task standaloneStartScript(type: CreateStartScripts) {
+	mainClassName = 'org.eclipse.xtext.ide.server.ServerLauncher'
+	applicationName = 'computational-modelling-language-server-stdio'
+	outputDir = new File(project.buildDir, 'scripts')
+	classpath = jar.outputs.files + project.configurations.runtime
+}
+
+applicationDistribution.into('bin') {
+	from(standaloneStartScript)
+	fileMode = 0755
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': '5XIE0 Language Server StdIO',
+                   'Implementation-Version': project['computational-modelling-language-server'],
+                   'Main-Class': 'org.eclipse.xtext.ide.server.ServerLauncher'
+    }
+}

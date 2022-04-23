@@ -1,0 +1,60 @@
+grammar org.xtext.computationalmodelling.MaxPlusMatrix with org.eclipse.xtext.common.Terminals
+
+generate maxplusmatrix "http://www.xtext.org/computationalmodelling/MaxPlusMatrix"
+
+
+MaxPlusMatrixModel:
+	'max-plus' 'model' name=ID ':'
+	('matrices' (matrices += MaxPlusMatrix)+)?
+	('vector sequences' (vectorsequences += VectorSequence)+)?
+	('event sequences' (eventsequences += EventSequence)+)?
+	;
+
+MaxPlusMatrix:
+	name=ID 
+	(labels = Labels)?
+	'='
+	'['
+	(rows += Row (',')?)*
+	']'
+;
+
+Row:
+	'[' ( elements += Element (',')?)* ']'
+;
+
+VectorSequence:
+	name=ID 
+	(labels = Labels)?
+	'='
+	'['
+	(vectors += Row (',')?)*
+	']'
+;
+
+EventSequence:
+	name=ID '='
+	sequence = Row
+;
+
+Labels:
+	'('
+	(label += ID (',')?)+	
+	')'
+;
+
+Element:
+	Number | '-inf'
+;
+
+Number:
+	INT | NINT | Float
+;
+
+terminal NINT:
+	'-' INT
+;
+
+terminal Float: 
+  '-'? INT? '.' INT (('E'|'e') '-'? INT)?
+;  

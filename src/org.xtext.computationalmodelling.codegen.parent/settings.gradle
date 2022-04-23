@@ -1,0 +1,3 @@
+include 'org.xtext.computationalmodelling'
+include 'org.xtext.computationalmodelling.ide'
+include 'org.xtext.computationalmodelling.codegen.compiler'

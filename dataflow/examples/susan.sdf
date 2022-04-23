@@ -1,0 +1,15 @@
+
+author = Reinier
+type = sdf
+Susan {
+	get_image[execution time: 1.0] --[production rate: 2; consumption rate: 1; name: imusan]--> susan_usan 
+	get_image --[token size: 8; initial tokens: 1; name: gigi]--> get_image
+	susan_usan --[token size: 1132]--> susan_direction 
+	susan_usan --[token size: 4528]--> susan_direction 
+	susan_direction --[token size: 1132]--> susan_thin 
+	susan_direction --[token size: 4528]--> susan_thin 
+	susan_direction --[token size: 1092]--> susan_thin
+	susan_thin --[token size: 1132]--> put_image
+	susan_thin--[token size: 1092]-->put_image 
+}
+

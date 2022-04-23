@@ -1,0 +1,2 @@
+include 'org.xtext.computationalmodelling.lsp'
+include 'org.xtext.computationalmodelling.lsp.ide'

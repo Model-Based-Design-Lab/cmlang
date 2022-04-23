@@ -1,0 +1,36 @@
+
+finite state automaton CoffeeMachine {
+    S1 -- s -----> S2
+    S1 -- h -----> S4
+
+    S2 -- b, t --> S1
+    S2 -- a -----> S3
+    S2 -- h -----> S5
+
+    S3 -- b -----> S2
+    S3 -- t -----> S1
+    S3 -- h -----> S6
+
+    S4 -- t -----> S1
+    S4 -- s -----> S5
+
+    S5 -- t -----> S1
+    S5 -- b -----> S4
+    S5 -- a -----> S6
+    S5 -- m -----> S7
+
+    S6 -- t -----> S1
+    S6 -- b -----> S5
+    S6 -- m -----> S7
+
+    S7 -- d -----> S8
+    S7 -- p -----> S9
+
+    S8 -- p -----> S10
+
+    S9 -- d -----> S10
+
+    states
+    S1 initial; final
+    S10 final
+}
