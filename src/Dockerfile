@@ -1,4 +1,4 @@
-FROM gradle:6
+FROM gradle:latest
 
 RUN mkdir /output
 

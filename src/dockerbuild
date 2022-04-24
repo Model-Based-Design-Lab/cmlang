@@ -1,7 +1,11 @@
 #!/bin/bash
 
-cd ./org.xtext.computationalmodelling.codegen.parent
+cd ./info.computationalmodeling.lang.parent
 ./gradlew installdist
+cp -R ./info.computationalmodeling.lang.ide/build/install/info.computationalmodeling.lang.ide /output/
 
-cd ../org.xtext.computationalmodelling.lsp.parent
+cd ../info.computationalmodeling.lang.codegen.parent
 ./gradlew installdist
+cp -R ./info.computationalmodeling.lang.codegen.compiler/build/install/info.computationalmodeling.lang.codegen.compiler /output/
+
+

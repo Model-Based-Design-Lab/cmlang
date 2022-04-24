@@ -1,9 +1,0 @@
-/.gradle/
-build/
-xtext-gen/
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/DataFlow.xtext
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/Automata.xtext
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/MarkovChains.xtext
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/validation/DataFlowValidator.xtend
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/validation/MarkoChainsValidator.xtend
-org.xtext.computationalmodelling.lsp.parent/src/main/java/org/xtext/computationalmodelling/validation/AutomataValidator.xtend
