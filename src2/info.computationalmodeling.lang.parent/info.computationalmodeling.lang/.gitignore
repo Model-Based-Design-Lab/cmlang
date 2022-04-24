@@ -1,0 +1,5 @@
+bin
+build
+model/generated
+src/main/xtend-gen
+src/main/xtext-gen

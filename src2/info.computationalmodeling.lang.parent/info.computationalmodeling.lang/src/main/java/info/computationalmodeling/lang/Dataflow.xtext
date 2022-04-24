@@ -1,0 +1,90 @@
+grammar info.computationalmodeling.lang.Dataflow with org.eclipse.xtext.common.Terminals
+generate dataflow "http://www.computationalmodeling.info/lang/Dataflow"
+
+
+DataflowModel:
+	('author' '=' author=ID)?
+	'dataflow' 'graph' name=ID '{'
+	('inputs' (inputs += Input)(',' inputs += Input)*)?
+	('outputs' (outputs += Output)(',' outputs += Output)*)?
+	edges += Edge*
+	'}'
+	(inputsignals = InputSignals)?
+;
+
+Edge:
+	(srcact= Actor ('-')* '->' dstact=Actor) | (srcact=Actor ('-')+ (specs=EdgeSpecs) ('-')* '->' dstact=Actor) 
+;
+
+EdgeSpecs:
+	{EdgeSpecs}
+	annotations += EdgeAnnotation (';' annotations += EdgeAnnotation)*
+;
+
+EdgeAnnotation:
+	(('initial' 'tokens' ':')? initialtokens=INT)
+	|
+	('production' 'rate' ':' prodrate=INT) 
+	|
+	('consumption' 'rate' ':' consrate=INT)
+	|
+	('name' ':' name=ID)
+	|
+	('token' 'size' ':' tokensize=INT)
+;
+
+Actor:
+	name=ID
+	(specs=ActorSpecs)?
+;
+
+ActorSpecs:
+	{ActorSpecs} '[' 
+	annotations += ActorAnnotation (';' annotations += ActorAnnotation)*
+	']'
+;
+
+ActorAnnotation:
+	(('execution' 'time' ':')? executiontime=Number) 
+;
+
+InputSignals:
+	'input' 'signals'
+	 (signals += Signal)+
+;
+
+Signal:
+	name=ID '='
+	'[' 
+	 (
+		 ( timestamps += TimeStamp)
+	 	(',' timestamps += TimeStamp)* 
+	)?
+	']'
+;
+
+TimeStamp:
+	Number | '-inf'
+;
+
+Number:
+	INT | NINT | Float
+;
+
+terminal NINT:
+	'-' INT
+;
+
+terminal Float: 
+  '-'? INT? '.' INT (('E'|'e') '-'? INT)?
+;
+
+Input:
+	name=ID
+;
+
+Output:
+	name=ID
+;
+
+

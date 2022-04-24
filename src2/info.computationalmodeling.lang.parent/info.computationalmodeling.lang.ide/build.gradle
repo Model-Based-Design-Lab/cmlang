@@ -1,0 +1,44 @@
+dependencies {
+	api project(':info.computationalmodeling.lang')
+	api "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	api "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}
+
+apply plugin: 'application'
+mainClassName = "org.eclipse.xtext.ide.server.ServerLauncher"
+
+startScripts {
+	applicationName = 'computational-modeling-language-server-stdio'
+}
+
+task standaloneStartScript(type: CreateStartScripts) {
+	mainClassName = 'org.eclipse.xtext.ide.server.ServerLauncher'
+	applicationName = 'computational-modeling-language-server-stdio'
+	outputDir = new File(project.buildDir, 'scripts')
+	classpath = jar.outputs.files + project.configurations.runtimeClasspath
+}
+
+distZip {
+	duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+distTar {
+	duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+installDist {
+	duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+applicationDistribution.into('bin') {
+	from(standaloneStartScript)
+	fileMode = 0755
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Computational Modeling Language Server StdIO',
+                   'Implementation-Version': project['computational-modeling-language-server'],
+                   'Main-Class': 'org.eclipse.xtext.ide.server.ServerLauncher'
+    }
+}

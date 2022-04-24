@@ -1,0 +1,85 @@
+grammar info.computationalmodeling.lang.FiniteStateAutomata with org.eclipse.xtext.common.Terminals
+
+generate finitestateautomata "http://www.computationalmodeling.info/lang/FiniteStateAutomata"
+
+FiniteStateAutomatonModel:
+	('author' '=' author=ID)?
+	'finite' 'state' 'automaton' name=ID '{'
+	edges += Edge*
+	('states' states += State*)?
+	'}'
+;
+
+Edge:
+		srcstate=State
+        (( ('-')* '->' dststate=State) | ( ('-')+ (specs=EdgeSpecs) ('-')* '->' dststate=State))
+;
+
+EdgeSpecs:
+	{EdgeSpecs} 
+	annotations += EdgeAnnotation ((','|';') annotations += EdgeAnnotation)*
+	
+;
+
+EdgeAnnotation:
+	( symbol=(FINAL | INITIAL | ID | STRING | EPSILONSYMBOL))
+;
+
+State:
+	// allow set-like and tuple-like notation for states
+	ustate=UndecoratedState (specs=StateSpecs)?
+;
+
+
+UndecoratedState:
+	// allow set-like and tuple-like notation for states
+		name=ID | 
+		stateSet = StateSet | 
+		stateTuple = StateTuple
+;
+
+StateSet:
+	{StateSet}
+	'{' (states += UndecoratedState) ((',') states += UndecoratedState)* '}'
+;
+
+StateTuple:
+	{StateTuple}
+	'(' (states += UndecoratedState) ((',') states += UndecoratedState)* ')'
+;
+
+
+StateSpecs:
+	{StateSpecs}
+	('[' annotations += StateAnnotation (';' annotations += StateAnnotation)* ']') |
+	(annotations += StateAnnotation (';' annotations += StateAnnotation)* )
+;
+
+
+
+
+StateAnnotation:
+	(initial = InitialAnnotation) | 
+	(final = FinalAnnotation ('[' (acceptanceSets += ID) (',' (acceptanceSets += ID))* ']')?)
+;
+
+InitialAnnotation:
+	INITIAL
+;
+FinalAnnotation:
+	FINAL
+;
+terminal FINAL: 'final' | 'f';
+terminal INITIAL: 'initial' | 'i' ;
+
+StateName: ID;
+
+Number:
+	Float | INT
+;
+
+Float: INT '.' INT;
+
+terminal EPSILONSYMBOL:
+	'#'
+;

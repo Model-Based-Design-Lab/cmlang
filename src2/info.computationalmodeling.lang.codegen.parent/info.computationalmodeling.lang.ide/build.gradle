@@ -1,0 +1,20 @@
+plugins {
+//    id 'application'
+}
+
+dependencies {
+	api project(':info.computationalmodeling.lang')
+	api "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	api "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}
+
+
+
+
+// uncomment to build the codegen executable
+// TODO: make two projects under parent project to build eacht of these separately, then two more for the FSA and DMC codegen projects
+
+// application {
+//     mainClassName = 'info.computationalmodeling.lang.generator.Main'
+// 	applicationName = 'cm-codegen'
+// }

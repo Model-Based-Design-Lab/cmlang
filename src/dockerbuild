@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ./org.xtext.computationalmodelling.codegen.parent
+./gradlew installdist
+
+cd ../org.xtext.computationalmodelling.lsp.parent
+./gradlew installdist

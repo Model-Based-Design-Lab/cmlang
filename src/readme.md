@@ -2,16 +2,30 @@
 
 ## Building the project
 
-- Open workspace in Eclipse
-- Import the parent project as an Existing Gradle Project
-- On project `org.xtext.computationalmodelling.parent`, right-click and select `Gradle`->`Refresh Gradle Project`. Wait for Eclipse to complete the process.
-- build either in a terminal or in Eclipse
+### Using Docker
+
+Build the docker image. In the `src` folder run:
+
+``` shell
+docker build . -t cmlang
+```
+
+Run the image. The results are visible in the mounted volume `/output`.
+
+### From the Command Line
 - in a terminal (make sure you are connected to the internet) type:
 
   ``` bash
   cd <inside the parent project>
   ./gradlew installDist
   ```
+
+### In Eclipse
+
+- Open workspace in Eclipse
+- Import the parent project as an Existing Gradle Project
+- On project `org.xtext.computationalmodelling.parent`, right-click and select `Gradle`->`Refresh Gradle Project`. Wait for Eclipse to complete the process.
+- build either in a terminal or in Eclipse
 
 - in Eclipse, in the Gradle Task View (can be opened by `Window=>Show View=>Other` then `Gradle=>Gradle Tasks`), run the `distribution/installDist` task of the `org.xtext.computationalmodelling.parent`
 - the result of the build are two executable Java programs
