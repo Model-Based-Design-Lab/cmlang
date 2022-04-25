@@ -27,7 +27,7 @@ To be done.
 
 ## Building the software
 
-The software can be built from the command line or using the provided docker image.
+The software can be built from the command line or using the provided docker image. Note that the build creates both Linux and Windows scripts to run the Java based tools.
 
 ### Command line build
 
@@ -48,7 +48,7 @@ The built code generator can be found in:
 
 ### Building with Docker
 
-Build the docker image:
+Build the [docker](https://www.docker.com/) image:
 
 The `Dockerfile` is located in the `/src` directory.
 In the `/src` directory, run the following command to build the image.
@@ -68,6 +68,9 @@ After a successful run the results are in the mounted volume.
 ## Using the Software
 
 To be done.
+
+Note that the software requires a Java JRE to be installed on the host platform to run.
+
 ## References
 
 <https://computationalmodeling.info>
