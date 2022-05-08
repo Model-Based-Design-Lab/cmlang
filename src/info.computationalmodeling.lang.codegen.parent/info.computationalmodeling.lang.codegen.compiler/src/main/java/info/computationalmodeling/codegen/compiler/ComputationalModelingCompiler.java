@@ -29,7 +29,7 @@ import com.google.inject.Injector;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class ComputationalModellingCompiler {
+public class ComputationalModelingCompiler {
 
 	@Inject
 	private Provider<ResourceSet> resourceSetProvider;
@@ -47,7 +47,7 @@ public class ComputationalModellingCompiler {
 
 	private static void showUsage() {
 		System.out.println("Usage:");
-		System.out.println("computational-modelling-codegen <filename.sdf> <outputdir>");
+		System.out.println("computational-modeling-codegen <filename.sdf> <outputdir>");
 	}
 
 	public static void main(String[] args) {
@@ -109,8 +109,10 @@ public class ComputationalModellingCompiler {
 		}
 		
 		if (injector != null) {
-			ComputationalModellingCompiler comp = injector.getInstance(ComputationalModellingCompiler.class);
+			ComputationalModelingCompiler comp = injector.getInstance(ComputationalModelingCompiler.class);
 			comp.runGenerator(filename, outputdir);
+		} else {
+			exitError("Failed to create injector.");
 		}
 	}
 

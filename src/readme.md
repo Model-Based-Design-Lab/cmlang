@@ -22,6 +22,8 @@ Run the image. The results are visible in the mounted volume `/output`.
 
 ### In Eclipse
 
+TODO: update
+
 - Open workspace in Eclipse
 - Import the parent project as an Existing Gradle Project
 - On project `org.xtext.computationalmodelling.parent`, right-click and select `Gradle`->`Refresh Gradle Project`. Wait for Eclipse to complete the process.

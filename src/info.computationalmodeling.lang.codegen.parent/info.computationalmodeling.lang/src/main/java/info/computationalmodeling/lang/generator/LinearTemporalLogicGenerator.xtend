@@ -7,6 +7,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import info.computationalmodeling.lang.LinearTemporalLogicRuntimeModule
+import com.google.inject.Guice
+
 
 /**
  * Generates code from your model files on save.
@@ -15,11 +18,15 @@ import org.eclipse.xtext.generator.IGeneratorContext
  */
 class LinearTemporalLogicGenerator extends AbstractGenerator {
 
+    com.google.inject.Injector injector = Guice.createInjector(new LinearTemporalLogicRuntimeModule());
+	LinearTemporalLogicGeneratorLaTeX genLaTeX = new LinearTemporalLogicGeneratorLaTeX();
+
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+
+
+	    injector.injectMembers(genLaTeX);
+		genLaTeX.doGenerate(resource, fsa, context);
+
 	}
+
 }

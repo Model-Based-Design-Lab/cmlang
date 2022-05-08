@@ -5,15 +5,15 @@ dependencies {
     api group: 'commons-io', name: 'commons-io', version: '2.0.1'}
 
 apply plugin: 'application'
-mainClassName = "info.computationalmodeling.lang.codegen.compiler.ComputationalModellingCompiler"
+mainClassName = "info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler"
 
 startScripts {
-	applicationName = 'computational-modelling-codegen'
+	applicationName = 'computational-modeling-codegen'
 }
 
 task standaloneStartScript(type: CreateStartScripts) {
-	mainClassName = 'info.computationalmodeling.lang.codegen.compiler.ComputationalModellingCompiler'
-	applicationName = 'computational-modelling-codegen'
+	mainClassName = 'info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler'
+	applicationName = 'computational-modeling-codegen'
 	outputDir = new File(project.buildDir, 'scripts')
 	classpath = jar.outputs.files + project.configurations.runtimeClasspath
 }
@@ -27,7 +27,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': '5XIE0 Code Generator',
                    'Implementation-Version': '1.0',
-                   'Main-Class': 'info.computationalmodeling.lang.codegen.compiler.ComputationalModellingCompiler'
+                   'Main-Class': 'info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler'
     }
 }
 
