@@ -15,6 +15,8 @@ class FiniteStateAutomataSupport {
 	public String VisualizationEpsilonSymbol = "&epsilon;"
 
 	public HashSet<String> setOfStates = new HashSet<String>() 
+	public HashSet<String> setOfInitialStates = new HashSet<String>() 
+	public HashSet<String> setOfFinalStates = new HashSet<String>() 
 	public HashMap<String,HashSet<String>> stateProperties = new HashMap<String,HashSet<String>>() 
 	public HashMap<String,HashMap<String,HashSet<String>>> edgeRelation = new HashMap<String,HashMap<String,HashSet<String>>>() 
 	public HashMap<Edge,String> edgeLabels = new HashMap<Edge,String>() 
@@ -30,6 +32,8 @@ class FiniteStateAutomataSupport {
 
 	def void extractProperties(FiniteStateAutomatonModel m){
 		this.setOfStates =  new HashSet<String>;
+		this.setOfInitialStates =  new HashSet<String>;
+		this.setOfFinalStates =  new HashSet<String>;
 		for(Edge e: m.edges) {
 			this.setOfStates.add(stateName(e.srcstate))
 			this.setOfStates.add(stateName(e.dststate))
@@ -41,6 +45,14 @@ class FiniteStateAutomataSupport {
 		for(State s: m.states) {
 			this.setOfStates.add(stateName(s))
 			this.extractStateProperties(s)
+		}
+		for(State s: this.setOfStates) {
+			if (this.stateProperties.get(s).contains('initial')) {
+				this.setOfInitialStates.add(s)
+			}
+			if (this.stateProperties.get(s).contains('final')) {
+				this.setOfFinalStates.add(s)
+			}
 		}
 	}
 	
