@@ -46,7 +46,7 @@ class FiniteStateAutomataSupport {
 			this.setOfStates.add(stateName(s))
 			this.extractStateProperties(s)
 		}
-		for(State s: this.setOfStates) {
+		for(String s: this.setOfStates) {
 			if (this.stateProperties.get(s).contains('initial')) {
 				this.setOfInitialStates.add(s)
 			}
