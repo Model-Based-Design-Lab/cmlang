@@ -58,7 +58,7 @@ class FiniteStateAutomataGeneratorGraphviz extends AbstractGenerator {
 		«FOR e:m.edges»
 			«this.compileEdge(e, ds)»
 		«ENDFOR»
-		«FOR s: ds.setOfStates»
+		«FOR s: ds.setOfInitialStates»
 			«this.compileInitialEdge(s, ds)»
 		«ENDFOR»
 		
@@ -88,11 +88,11 @@ class FiniteStateAutomataGeneratorGraphviz extends AbstractGenerator {
     '''
 
 	def compileInitialEdge(String s, FiniteStateAutomataSupport ds) '''
-		«IF ds.stateProperties.get(s).contains('initial')»init -> "«s»" [minlen=2 len=2]«ENDIF»
+		"init_«s»" -> "«s»" [minlen=2 color="#0d0dfb" fillcolor="#0d0dfb"]
     '''
 
 	def compileInitialPoints(String s, FiniteStateAutomataSupport ds) '''
-		init_«s» [shape=point, label="", color="#0d0dfb" fillcolor="#0d0dfb" width=0.05 style=filled]
+		"init_«s»" [shape=point, label="", color="#0d0dfb" fillcolor="#0d0dfb" width=0.05 style=filled]
 	'''
 
 }
