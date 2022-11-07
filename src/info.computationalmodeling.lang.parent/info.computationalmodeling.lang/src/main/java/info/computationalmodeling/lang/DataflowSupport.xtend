@@ -61,7 +61,7 @@ class DataflowSupport {
 		if (a.specs !== null) {
 			for(ActorAnnotation ann: a.specs.annotations){
 				if (ann.executiontime !== null) {
-					this.addProperty(this.actorProperties, a.name, "executiontime", ann.executiontime)
+					this.addProperty(this.actorProperties, a.name, "executiontime", ann.executiontime.toString())
 				}
 			}
 		}
