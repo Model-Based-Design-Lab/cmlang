@@ -34,7 +34,7 @@ The software can be built from the command line or using the provided docker ima
 Building from the command line requires a recent [Java JDK](https://adoptium.net/) and [Gradle](https://gradle.org/install/) to be installed.
 
 ``` shell
-cd ..\info.computationalmodeling.lang.parent\
+cd src\info.computationalmodeling.lang.parent\
 ./gradlew installDist
 cd ..\info.computationalmodeling.lang.codegen.parent\
 ./gradlew installDist

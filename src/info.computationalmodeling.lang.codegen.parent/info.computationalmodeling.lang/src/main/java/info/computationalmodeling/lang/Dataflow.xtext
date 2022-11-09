@@ -68,7 +68,15 @@ TimeStamp:
 ;
 
 Number:
-	INT | NINT | Float
+	ratio=Ratio | PNInt | Float
+;
+
+Ratio:
+	numerator=PNInt '/' denominator=INT
+;
+
+PNInt:
+	INT | NINT
 ;
 
 terminal NINT:
