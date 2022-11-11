@@ -25,7 +25,7 @@ class DataflowSupport {
 	public HashSet<String> outputNames = new HashSet<String>
 
 	int DEFAULT_ACTOR_EXECUTION_TIME = 1
-	String DEFAULT_ACTOR_EXECUTION_TIME_STRING = "1"
+	String DEFAULT_ACTOR_EXECUTION_TIME_STRING = ""
 
 
 	def getChannelNames(DataflowModel m){
@@ -68,8 +68,8 @@ class DataflowSupport {
 						this.addProperty(this.actorProperties, a.name, "executiontimevalue", value.toString() )
 						this.addProperty(this.actorProperties, a.name, "executiontimestring", text)
 					} else {
-						this.addProperty(this.actorProperties, a.name, "executiontimevalue", ann.executiontime.toString())
-						this.addProperty(this.actorProperties, a.name, "executiontimestring", ann.executiontime.toString())
+						this.addProperty(this.actorProperties, a.name, "executiontimevalue", ann.executiontime.value.toString())
+						this.addProperty(this.actorProperties, a.name, "executiontimestring", ann.executiontime.value.toString())
 					}
 				}
 			}

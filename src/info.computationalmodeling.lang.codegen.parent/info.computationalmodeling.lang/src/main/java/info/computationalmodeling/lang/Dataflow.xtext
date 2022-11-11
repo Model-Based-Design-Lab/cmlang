@@ -68,7 +68,7 @@ TimeStamp:
 ;
 
 Number:
-	ratio=Ratio | PNInt | Float
+	ratio=Ratio | value=(PNInt | Float)
 ;
 
 Ratio:

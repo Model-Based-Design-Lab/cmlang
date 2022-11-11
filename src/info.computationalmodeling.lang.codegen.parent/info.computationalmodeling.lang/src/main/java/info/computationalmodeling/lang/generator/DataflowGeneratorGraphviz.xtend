@@ -55,7 +55,11 @@ class DataflowGeneratorGraphviz extends AbstractGenerator {
 
 	def compileActors(DataflowModel m, DataflowSupport ds) '''
 		«FOR a: ds.setOfActors(m)»
-			«a» [label="«a»\n«ds.getExecutionTimeString(a)»"]
+			«IF ds.getExecutionTimeString(a).length() > 0»
+				«a» [label="«a»\n«ds.getExecutionTimeString(a)»"]
+			«ELSE»
+				«a» [label="«a»"]
+			«ENDIF»
 		«ENDFOR»
 		
     '''
