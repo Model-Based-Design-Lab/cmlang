@@ -97,7 +97,7 @@ class DataflowGeneratorGraphviz extends AbstractGenerator {
     '''
 
 	def compileRegularEdge(Edge e, DataflowSupport ds) '''
-				«e.srcact.name» -> «e.dstact.name» [minlen=3 len=3 xlabel="«ds.getInitialTokens(e).toString»" «IF ds.getConsRate(e) != 1»headlabel="«ds.getConsRate(e).toString»"«ENDIF» «IF ds.getProdRate(e) != 1»taillabel="«ds.getProdRate(e).toString»"«ENDIF»]
+				«e.srcact.name» -> «e.dstact.name» [minlen=3 len=3 «IF ds.getInitialTokens(e)>0»xlabel="«ds.getInitialTokens(e).toString»"«ENDIF» «IF ds.getConsRate(e) != 1»headlabel="«ds.getConsRate(e).toString»"«ENDIF» «IF ds.getProdRate(e) != 1»taillabel="«ds.getProdRate(e).toString»"«ENDIF»]
     '''
 
 
