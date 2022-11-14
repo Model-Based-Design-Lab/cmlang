@@ -110,4 +110,4 @@ Contact: Marc Geilen, <m.c.w.geilen@tue.nl>
 
 ## License
 
-This software is licensed under the MIT Licenses
+This software is licensed under the MIT License
