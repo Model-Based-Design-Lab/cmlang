@@ -12,7 +12,7 @@ startScripts {
 }
 
 task standaloneStartScript(type: CreateStartScripts) {
-	mainClassName = 'info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler'
+	mainClass = 'info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler'
 	applicationName = 'computational-modeling-codegen'
 	outputDir = new File(project.buildDir, 'scripts')
 	classpath = jar.outputs.files + project.configurations.runtimeClasspath

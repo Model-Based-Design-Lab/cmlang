@@ -25,6 +25,7 @@ class DataflowSupport {
 	public HashSet<String> outputNames = new HashSet<String>
 
 	int DEFAULT_ACTOR_EXECUTION_TIME = 1
+	String DEFAULT_ACTOR_EXECUTION_TIME_STRING = ""
 
 
 	def getChannelNames(DataflowModel m){
@@ -61,7 +62,15 @@ class DataflowSupport {
 		if (a.specs !== null) {
 			for(ActorAnnotation ann: a.specs.annotations){
 				if (ann.executiontime !== null) {
-					this.addProperty(this.actorProperties, a.name, "executiontime", ann.executiontime)
+					if (ann.executiontime.ratio !== null) {
+						val value = Double.parseDouble(ann.executiontime.ratio.numerator) / (ann.executiontime.ratio.denominator as double)
+						val text = '''«ann.executiontime.ratio.numerator»/«ann.executiontime.ratio.denominator»'''
+						this.addProperty(this.actorProperties, a.name, "executiontimevalue", value.toString() )
+						this.addProperty(this.actorProperties, a.name, "executiontimestring", text)
+					} else {
+						this.addProperty(this.actorProperties, a.name, "executiontimevalue", ann.executiontime.value.toString())
+						this.addProperty(this.actorProperties, a.name, "executiontimestring", ann.executiontime.value.toString())
+					}
 				}
 			}
 		}
@@ -130,14 +139,24 @@ class DataflowSupport {
 		return Integer.parseInt(this.channelProperties.get(ename).get("initialtokens"))
 	}
 	
-	def double getExecutionTime(String actor) {
+	def double getExecutionTimeValue(String actor) {
 		if (this.actorProperties.containsKey(actor)) {
-			if (this.actorProperties.get(actor).containsKey("executiontime")) {
-				return Double.parseDouble(this.actorProperties.get(actor).get("executiontime"))
+			if (this.actorProperties.get(actor).containsKey("executiontimevalue")) {
+				return Double.parseDouble(this.actorProperties.get(actor).get("executiontimevalue"))
 			}
 		}
 		return DEFAULT_ACTOR_EXECUTION_TIME
 	}
+
+	def String getExecutionTimeString(String actor) {
+		if (this.actorProperties.containsKey(actor)) {
+			if (this.actorProperties.get(actor).containsKey("executiontimestring")) {
+				return this.actorProperties.get(actor).get("executiontimestring")
+			}
+		}
+		return DEFAULT_ACTOR_EXECUTION_TIME_STRING
+	}
+
 
 	def void extractChannelProperties(DataflowModel m) {
 		channelProperties = new HashMap<String, HashMap<String,String>>()

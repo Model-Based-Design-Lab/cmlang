@@ -42,7 +42,7 @@ class FiniteStateAutomataGeneratorGraphviz extends AbstractGenerator {
 		digraph «m.name» {
 		rankdir="LR";
 		graph [bgcolor=transparent,overlap=false]
-		node [fontsize=20 fontname="Calibri" fillcolor="#98FDF4" width=0.6 penwidth=2 style=filled shape=circle]
+		node [fontsize=20 fontname="Calibri" color="#FB0808" fillcolor="#FFFFFF" width=0.6 penwidth=3 style=filled shape=circle]
 		edge[fontsize=16 fontname="Calibri"]
 			«this.compileGraph(m, ds)»
 		}
@@ -52,11 +52,13 @@ class FiniteStateAutomataGeneratorGraphviz extends AbstractGenerator {
 		«FOR s: ds.setOfStates»
 			«this.compileState(s, ds)»
 		«ENDFOR»
-		init [shape=point, label="", fillcolor="#000000" width=0.05 style=filled]
+		«FOR s: ds.setOfInitialStates»
+			«this.compileInitialPoints(s, ds)»
+		«ENDFOR»
 		«FOR e:m.edges»
 			«this.compileEdge(e, ds)»
 		«ENDFOR»
-		«FOR s: ds.setOfStates»
+		«FOR s: ds.setOfInitialStates»
 			«this.compileInitialEdge(s, ds)»
 		«ENDFOR»
 		
@@ -81,13 +83,16 @@ class FiniteStateAutomataGeneratorGraphviz extends AbstractGenerator {
 		return "error!"
 	}
 
-
 	def compileState(String s, FiniteStateAutomataSupport ds) '''
-		"«s»" [ «IF ds.stateProperties.get(s).contains('final')»peripheries = 2«ENDIF»«IF ds.stateToolTips.containsKey(s)» tooltip="«ds.stateToolTips.get(s)»"«ENDIF»]
+		"«s»" [ «IF ds.stateProperties.get(s).contains('final')»shape=doublecircle color="#0eb65a"«ENDIF»«IF ds.stateProperties.get(s).contains('initial')»color="#0d0dfb"«ENDIF»«IF ds.stateToolTips.containsKey(s)» tooltip="«ds.stateToolTips.get(s)»"«ENDIF»]
     '''
 
 	def compileInitialEdge(String s, FiniteStateAutomataSupport ds) '''
-		«IF ds.stateProperties.get(s).contains('initial')»init -> "«s»" [minlen=2 len=2]«ENDIF»
+		"init_«s»" -> "«s»" [minlen=2 color="#0d0dfb" fillcolor="#0d0dfb"]
     '''
+
+	def compileInitialPoints(String s, FiniteStateAutomataSupport ds) '''
+		"init_«s»" [shape=point, label="", color="#0d0dfb" fillcolor="#0d0dfb" width=0.05 style=filled]
+	'''
 
 }

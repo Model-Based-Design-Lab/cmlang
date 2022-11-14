@@ -55,7 +55,11 @@ class DataflowGeneratorGraphviz extends AbstractGenerator {
 
 	def compileActors(DataflowModel m, DataflowSupport ds) '''
 		«FOR a: ds.setOfActors(m)»
-			«a» [label="«a»\n«ds.getExecutionTime(a)»"]
+			«IF ds.getExecutionTimeString(a).length() > 0»
+				«a» [label="«a»\n«ds.getExecutionTimeString(a)»"]
+			«ELSE»
+				«a» [label="«a»"]
+			«ENDIF»
 		«ENDFOR»
 		
     '''
@@ -93,7 +97,7 @@ class DataflowGeneratorGraphviz extends AbstractGenerator {
     '''
 
 	def compileRegularEdge(Edge e, DataflowSupport ds) '''
-				«e.srcact.name» -> «e.dstact.name» [minlen=3 len=3 xlabel="«ds.getInitialTokens(e).toString»" headlabel="«ds.getConsRate(e).toString»" taillabel="«ds.getProdRate(e).toString»"]
+				«e.srcact.name» -> «e.dstact.name» [minlen=3 len=3 «IF ds.getInitialTokens(e)>0»xlabel="«ds.getInitialTokens(e).toString»"«ENDIF» «IF ds.getConsRate(e) != 1»headlabel="«ds.getConsRate(e).toString»"«ENDIF» «IF ds.getProdRate(e) != 1»taillabel="«ds.getProdRate(e).toString»"«ENDIF»]
     '''
 
 

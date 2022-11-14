@@ -87,7 +87,7 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 		«FOR a: ds.setOfActors(m)»
 			<actorProperties actor="«a»">
 				<processor type="p1" default="true">
-				<executionTime time="«ds.getExecutionTime(a).toString()»"/>
+				<executionTime time="«ds.getExecutionTimeValue(a)»"/>
 				</processor>
 			</actorProperties>
 		«ENDFOR»
