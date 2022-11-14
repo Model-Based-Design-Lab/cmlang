@@ -1,5 +1,8 @@
 # Computational Modeling Language Tools
 
+GitHub: <https://github.com/Model-Based-Design-Lab/cmlang>
+
+This repository contains the domain-specific-language tools related to [Computational Modeling] 
 ## Software
 
 This repository contains two Java/Xtext based projects.
@@ -23,7 +26,24 @@ It further contains a server for [the Language Server Protocol](https://microsof
 
 `src/info.computationalmodeling.lang.codegen.parent`
 
-To be done.
+This project contains a code generation tool for the various languages defined in the LSP project.
+
+Depending on the model it generates one more of the following
+
+- Visualization using [graphviz](https:/graphviz.org)
+- Conversion to the [SDF3](https://www.es.ele.tue.nl/sdf3) file format
+- Visualization in LaTeX
+- Conversion to [Octave](https://octave.org)
+
+Extensions for the files are assumed to be as follows:
+
+- `.sdf` for dataflow models, generating Graphviz and SDF3
+- `.mpm` for max-plus models, generating LaTeX
+- `.fsa` for finite state automata models, generating Graphviz
+- `.dtmc` for Markov Chain models, generating Octave and Graphviz
+- `.ltl` for Linear Temporal Logic models, generating LaTeX
+- `.regex` for regular expression models, generating LaTeX
+
 
 ## Building the software
 
@@ -57,27 +77,37 @@ In the `/src` directory, run the following command to build the image.
 docker build -t cmlang .
 ```
 
-Run the docker image using a mounted volume referred to as `<volume>` in the command below.
+Run the docker image using a mounted volume referred to as `<volume-name>` in the command below.
 
 ``` shell
-docker run -v <volumename>:/output cmlang
+docker run -v <volume-name>:/output cmlang
 ```
 
 After a successful run the results are in the mounted volume.
 
 ## Using the Software
 
-To be done.
-
 Note that the software requires a Java JRE to be installed on the host platform to run.
+
+The LSP project produces a script to start the application in the `bin` directory after building. The script is called `computational-modelling-language-server-stdio`. When run, it accepts LSP clients on `stdin` and produces outputs on `stdout`.
+
+The code generation project produces a script to start the application in the `bin` directory after building.
+
+The tool is run with the following command-line.
+
+`codegen <input-file> <output-dir>`
+
+It will apply all code generation options it has for the type of `input-file` and writes corresponding output files in the directory `output-dir`.
+
 
 ## References
 
-<https://computationalmodeling.info>
+This tool has been developed by the Model-Based Design Lab, <https://computationalmodeling.info>
 
-<m.c.w.geilen@tue.nl>
+GitHub: <https://github.com/Model-Based-Design-Lab>
 
+Contact: Marc Geilen, <m.c.w.geilen@tue.nl>
 
 ## License
 
-This software is licenced under the MIT License
+This software is licensed under the MIT Licenses
