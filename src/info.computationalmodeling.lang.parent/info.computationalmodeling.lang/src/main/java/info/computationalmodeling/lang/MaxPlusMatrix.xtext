@@ -44,11 +44,19 @@ Labels:
 ;
 
 Element:
-	Number | '-inf'
+	num = Number | inf = '-inf'
 ;
 
 Number:
-	INT | NINT | Float
+	ratio=Ratio | value=(PNInt | Float)
+;
+
+Ratio:
+	numerator=PNInt '/' denominator=INT
+;
+
+PNInt:
+	INT | NINT
 ;
 
 terminal NINT:
@@ -57,4 +65,4 @@ terminal NINT:
 
 terminal Float: 
   '-'? INT? '.' INT (('E'|'e') '-'? INT)?
-;  
+;

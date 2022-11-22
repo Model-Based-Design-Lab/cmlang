@@ -14,6 +14,7 @@ import info.computationalmodeling.lang.maxplusmatrix.MaxPlusMatrix
 import info.computationalmodeling.lang.maxplusmatrix.VectorSequence
 import info.computationalmodeling.lang.maxplusmatrix.EventSequence
 import info.computationalmodeling.lang.maxplusmatrix.Row
+import info.computationalmodeling.lang.maxplusmatrix.Element
 import java.util.List
 import java.util.ArrayList
 
@@ -106,12 +107,25 @@ class MaxPlusMatrixGeneratorLaTeX extends AbstractGenerator {
 						res.get(i).add("-inf")
 					}
 				}				
-				res.get(i).add(e)
+				res.get(i).add(compileElement(e))
 				i += 1
 			}
 			j += 1
 		}
 		return res
+	}
+
+
+	def compileElement(Element e) {
+		if (e.inf !== null) {
+			return " - \\infty{}"
+		}
+		if (e.num.ratio !== null) {
+			return '''\frac{«e.num.ratio.numerator»}{«e.num.ratio.denominator»}'''
+		}
+		else {
+			return e.num.value.toString
+		}
 	}
 
 	def compileRow(Row r) {
@@ -122,12 +136,7 @@ class MaxPlusMatrixGeneratorLaTeX extends AbstractGenerator {
 				res += " & "
 			}
 			i = i+1
-			if (e == "-inf") {
-				res += " - \\infty{}"
-			}
-			else {
-				res += e
-			}
+			res += compileElement(e)
 		}
 		return res
 	}
