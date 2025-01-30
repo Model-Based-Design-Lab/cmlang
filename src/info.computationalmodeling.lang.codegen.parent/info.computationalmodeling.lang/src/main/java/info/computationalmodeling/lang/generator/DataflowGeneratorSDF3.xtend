@@ -10,12 +10,13 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import info.computationalmodeling.lang.dataflow.DataflowModel
+import info.computationalmodeling.lang.dataflow.Edge
 import info.computationalmodeling.lang.DataflowSupport
 import java.util.Map
 
 /**
  * Generates code from your model files on save.
- * 
+ *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class DataflowGeneratorSDF3 extends AbstractGenerator {
@@ -31,10 +32,11 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
         	ds.getChannelNames(m)
         	ds.extractActorProperties(m)
         	ds.extractChannelProperties(m)
+			ds.extractInputOutputNames(m)
         	ds.determinePortNames(m)
 	        fsa.generateFile(
 	            m.fullyQualifiedName.toString("/") + ".sdfx",
-	            m.compile(ds))                
+	            m.compile(ds))
         }
 	}
 
@@ -47,8 +49,9 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 		<sdf3 xsi:noNamespaceSchemaLocation="http://www.es.ele.tue.nl/sdf3/xsd/sdf3-sdf.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" type="sdf">
 			<applicationGraph name="«m.name»">
 				<sdf name="«m.name»" type="«m.name»">
-					«this.compileActorlist(m, ds)»
-					«this.compileChannellist(m, ds)»
+					«this.compileActorList(m, ds)»
+					«this.compileChannelList(m, ds)»
+					«this.compileInputOutputList(m, ds)»
 				</sdf>
 				<sdfProperties>
 					«this.compileActorProperties(m, ds)»
@@ -59,27 +62,65 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
     '''
 
 
-	def compileActorlist(DataflowModel m, DataflowSupport ds) '''
+	def compileActorList(DataflowModel m, DataflowSupport ds) '''
 		«FOR a: ds.setOfActors(m)»
+			«IF ds.isProperActor(a)»
 			<actor name="«a»" type="«a»">
 				«this.compilePortsOfActor(a, ds)»
 			</actor>
+			«ENDIF»
 		«ENDFOR»
     '''
-   
+
+	def compileInputOutputList(DataflowModel m, DataflowSupport ds) '''
+		«FOR a: ds.setOfInputActors()»
+			<input name="«a»"/>
+		«ENDFOR»
+		«FOR a: ds.setOfOutputActors()»
+			<output name="«a»"/>
+		«ENDFOR»
+    '''
+
+
     def compilePortsOfActor(String a, DataflowSupport ds) '''
     	«FOR p: ds.getPortsOfActor(a).entrySet»
     		«this.compilePort(p)»
     	«ENDFOR»
     '''
-    
+
     def compilePort(Map.Entry<String,Pair<Integer,String>> p) '''
 		<port type="«p.getValue().getValue()»" name="«p.getKey()»" rate="«p.getValue().getKey()»"/>
     '''
 
-	def compileChannellist(DataflowModel m, DataflowSupport ds) '''
+	def channelSrcSpec(DataflowSupport ds, Edge e) {
+		if (ds.channelHasInputSrc(e)) {
+			return "srcInput=\""+e.srcact.name+"\""
+		}
+		return "srcPort=\"" + ds.getSrcPortName(e) + "\" srcActor=\""+ e.srcact.name+ "\""
+	}
+
+	def channelDstSpec(DataflowSupport ds, Edge e) {
+		if (ds.channelHasOutputDst(e)) {
+			return "dstOutput=\""+e.dstact.name+"\""
+		}
+		return "dstPort=\"" + ds.getDstPortName(e) + "\" dstActor=\""+ e.dstact.name+ "\""
+	}
+
+	def compileInitialTokenSpec(DataflowSupport ds, Edge e) {
+		val itSpec = ds.channelProperties.get(ds.channelNames.get(e)).get("initialtokens")
+		if (itSpec != "0") {
+			return "initialTokens=\""+itSpec+"\""
+		}
+		return ""
+	}
+
+	def compileChannel(DataflowSupport ds, Edge e) '''
+			<channel name="«ds.channelNames.get(e)»" «this.channelSrcSpec(ds, e)» «this.channelDstSpec(ds, e)» «this.compileInitialTokenSpec(ds, e)»/>
+	'''
+
+	def compileChannelList(DataflowModel m, DataflowSupport ds) '''
 		«FOR e: m.edges»
-			<channel name="«ds.channelNames.get(e)»" dstPort="«ds.getDstPortName(e)»" dstActor="«e.dstact.name»" srcPort="«ds.getSrcPortName(e)»" srcActor="«e.srcact.name»" initialTokens="«ds.channelProperties.get(ds.channelNames.get(e)).get("initialtokens")»"/>
+			«this.compileChannel(ds, e)»
 		«ENDFOR»
     '''
 
@@ -92,12 +133,12 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 			</actorProperties>
 		«ENDFOR»
 	'''
-		
+
 	def compileChannelProperties(DataflowModel m, DataflowSupport ds)'''
 		«FOR e: m.edges»
 			<channelProperties channel="«ds.channelNames.get(e)»"/>
 		«ENDFOR»
 	'''
 
-    
+
 }
