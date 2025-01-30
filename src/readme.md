@@ -13,6 +13,7 @@ docker build . -t cmlang
 Run the image. The results are visible in the mounted volume `/output`.
 
 ### From the Command Line
+
 - in a terminal (make sure you are connected to the internet) type:
 
   ``` bash

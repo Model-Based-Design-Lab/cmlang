@@ -2,7 +2,8 @@
 
 GitHub: <https://github.com/Model-Based-Design-Lab/cmlang>
 
-This repository contains the domain-specific-language tools related to [Computational Modeling] 
+This repository contains the domain-specific-language tools related to [Computational Modeling]
+
 ## Software
 
 This repository contains two Java/Xtext based projects.
@@ -43,7 +44,6 @@ Extensions for the files are assumed to be as follows:
 - `.dtmc` for Markov Chain models, generating Octave and Graphviz
 - `.ltl` for Linear Temporal Logic models, generating LaTeX
 - `.regex` for regular expression models, generating LaTeX
-
 
 ## Building the software
 
@@ -98,7 +98,6 @@ The tool is run with the following command-line.
 `codegen <input-file> <output-dir>`
 
 It will apply all code generation options it has for the type of `input-file` and writes corresponding output files in the directory `output-dir`.
-
 
 ## References
 
