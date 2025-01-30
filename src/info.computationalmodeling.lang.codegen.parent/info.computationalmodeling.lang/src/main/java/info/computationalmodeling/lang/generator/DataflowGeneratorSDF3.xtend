@@ -10,6 +10,7 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import info.computationalmodeling.lang.dataflow.DataflowModel
+import info.computationalmodeling.lang.dataflow.Edge
 import info.computationalmodeling.lang.DataflowSupport
 import java.util.Map
 
@@ -31,6 +32,7 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
         	ds.getChannelNames(m)
         	ds.extractActorProperties(m)
         	ds.extractChannelProperties(m)
+			ds.extractInputOutputNames(m)
         	ds.determinePortNames(m)
 	        fsa.generateFile(
 	            m.fullyQualifiedName.toString("/") + ".sdfx",
@@ -72,12 +74,10 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 
 	def compileInputOutputList(DataflowModel m, DataflowSupport ds) '''
 		«FOR a: ds.setOfInputActors()»
-			<input name="«a»" type="«a»">
-			</input>
+			<input name="«a»"/>
 		«ENDFOR»
 		«FOR a: ds.setOfOutputActors()»
-			<output name="«a»" type="«a»">
-			</output>
+			<output name="«a»"/>
 		«ENDFOR»
     '''
 
@@ -92,13 +92,35 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 		<port type="«p.getValue().getValue()»" name="«p.getKey()»" rate="«p.getValue().getKey()»"/>
     '''
 
+	def channelSrcSpec(DataflowSupport ds, Edge e) {
+		if (ds.channelHasInputSrc(e)) {
+			return "srcInput=\""+e.srcact.name+"\""
+		}
+		return "srcPort=\"" + ds.getSrcPortName(e) + "\" srcActor=\""+ e.srcact.name+ "\""
+	}
+
+	def channelDstSpec(DataflowSupport ds, Edge e) {
+		if (ds.channelHasOutputDst(e)) {
+			return "dstOutput=\""+e.dstact.name+"\""
+		}
+		return "dstPort=\"" + ds.getDstPortName(e) + "\" dstActor=\""+ e.dstact.name+ "\""
+	}
+
+	def compileInitialTokenSpec(DataflowSupport ds, Edge e) {
+		val itSpec = ds.channelProperties.get(ds.channelNames.get(e)).get("initialtokens")
+		if (itSpec != "0") {
+			return "initialTokens=\""+itSpec+"\""
+		}
+		return ""
+	}
+
+	def compileChannel(DataflowSupport ds, Edge e) '''
+			<channel name="«ds.channelNames.get(e)»" «this.channelSrcSpec(ds, e)» «this.channelDstSpec(ds, e)» «this.compileInitialTokenSpec(ds, e)»/>
+	'''
+
 	def compileChannelList(DataflowModel m, DataflowSupport ds) '''
 		«FOR e: m.edges»
-			«IF ds.channelHasInputSrc(e)»
-			«ELSE»
-			«ENDIF»
-
-			<channel name="«ds.channelNames.get(e)»" dstPort="«ds.getDstPortName(e)»" dstActor="«e.dstact.name»" srcPort="«ds.getSrcPortName(e)»" srcActor="«e.srcact.name»" initialTokens="«ds.channelProperties.get(ds.channelNames.get(e)).get("initialtokens")»"/>
+			«this.compileChannel(ds, e)»
 		«ENDFOR»
     '''
 

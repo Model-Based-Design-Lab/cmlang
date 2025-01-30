@@ -2,6 +2,7 @@ src/main/xtend-gen
 src/main/xtext-gen
 build
 bin
+xtend-gen
 
 .classpath
 .settings

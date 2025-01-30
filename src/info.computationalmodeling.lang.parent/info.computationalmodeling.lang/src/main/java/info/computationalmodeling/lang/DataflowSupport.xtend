@@ -228,7 +228,11 @@ class DataflowSupport {
 	}
 
 	def channelHasInputSrc(Edge e) {
-		return inputNames.contains(this.channelNames.get(e)).get("src"))
+		return inputNames.contains(e.srcact.name)
+	}
+
+	def channelHasOutputDst(Edge e) {
+		return outputNames.contains(e.dstact.name)
 	}
 
 }
