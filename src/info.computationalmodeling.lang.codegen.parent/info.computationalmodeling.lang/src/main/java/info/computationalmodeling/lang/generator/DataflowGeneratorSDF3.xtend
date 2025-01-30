@@ -71,14 +71,12 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
     '''
 
 	def compileInputOutputList(DataflowModel m, DataflowSupport ds) '''
-		«FOR a: ds.setOfInputActors(m)»
+		«FOR a: ds.setOfInputActors()»
 			<input name="«a»" type="«a»">
-				«this.compilePortsOfInput(a, ds)»
 			</input>
 		«ENDFOR»
-		«FOR a: ds.setOfOutputActors(m)»
+		«FOR a: ds.setOfOutputActors()»
 			<output name="«a»" type="«a»">
-				«this.compilePortsOfOutput(a, ds)»
 			</output>
 		«ENDFOR»
     '''
@@ -96,7 +94,10 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 
 	def compileChannelList(DataflowModel m, DataflowSupport ds) '''
 		«FOR e: m.edges»
-			check if src/dst are input or output
+			«IF ds.channelHasInputSrc(e)»
+			«ELSE»
+			«ENDIF»
+
 			<channel name="«ds.channelNames.get(e)»" dstPort="«ds.getDstPortName(e)»" dstActor="«e.dstact.name»" srcPort="«ds.getSrcPortName(e)»" srcActor="«e.srcact.name»" initialTokens="«ds.channelProperties.get(ds.channelNames.get(e)).get("initialtokens")»"/>
 		«ENDFOR»
     '''

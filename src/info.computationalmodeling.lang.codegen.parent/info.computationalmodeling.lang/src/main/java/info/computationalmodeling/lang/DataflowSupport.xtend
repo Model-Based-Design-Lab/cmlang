@@ -13,11 +13,11 @@ import java.util.HashSet
 
 class DataflowSupport {
 
-	public HashMap<String,HashMap<String,String>> actorProperties = new HashMap<String,HashMap<String,String>>() 
-	public HashMap<String,HashMap<String,String>> channelProperties = new HashMap<String,HashMap<String,String>>() 
-	public HashMap<Edge,String> channelNames = new HashMap<Edge,String> 
-	// ports: map from actor to map from name to pair of rate, in/out 
-	public HashMap<String,HashMap<String,Pair<Integer,String>>> ports = new HashMap<String,HashMap<String,Pair<Integer,String>>>  
+	public HashMap<String,HashMap<String,String>> actorProperties = new HashMap<String,HashMap<String,String>>()
+	public HashMap<String,HashMap<String,String>> channelProperties = new HashMap<String,HashMap<String,String>>()
+	public HashMap<Edge,String> channelNames = new HashMap<Edge,String>
+	// ports: map from actor to map from name to pair of rate, in/out
+	public HashMap<String,HashMap<String,Pair<Integer,String>>> ports = new HashMap<String,HashMap<String,Pair<Integer,String>>>
 	// link between channels 'src'/'dst' and port names
 	public HashMap<String,HashMap<String,String>> portnames = new HashMap<String,HashMap<String,String>>()
 
@@ -36,7 +36,7 @@ class DataflowSupport {
 				for (a: e.specs.annotations) {
 					if (a.name !== null) {
 						chname = a.name
-						
+
 					}
 				}
 			}
@@ -95,7 +95,7 @@ class DataflowSupport {
 
 
 	def void addChannelProperties(Edge e) {
-		val ename = this.channelNames.get(e) 
+		val ename = this.channelNames.get(e)
 		this.addProperty(this.channelProperties, ename, "name", ename)
 		// set default values
 		this.addProperty(this.channelProperties, ename, "initialtokens", "0")
@@ -125,20 +125,20 @@ class DataflowSupport {
 	}
 
 	def int getProdRate(Edge e) {
-		val ename = this.channelNames.get(e) 
+		val ename = this.channelNames.get(e)
 		return Integer.parseInt(this.channelProperties.get(ename).get("prodrate"))
 	}
 
 	def int getConsRate(Edge e) {
-		val ename = this.channelNames.get(e) 
+		val ename = this.channelNames.get(e)
 		return Integer.parseInt(this.channelProperties.get(ename).get("consrate"))
 	}
 
 	def int getInitialTokens(Edge e) {
-		val ename = this.channelNames.get(e) 
+		val ename = this.channelNames.get(e)
 		return Integer.parseInt(this.channelProperties.get(ename).get("initialtokens"))
 	}
-	
+
 	def double getExecutionTimeValue(String actor) {
 		if (this.actorProperties.containsKey(actor)) {
 			if (this.actorProperties.get(actor).containsKey("executiontimevalue")) {
@@ -201,12 +201,12 @@ class DataflowSupport {
     		this.addPort(e.dstact.name, ename, "dst", pname, prate, "in")
     	}
     }
-    
+
     def getPortsOfActor(String aname) {
     	return this.ports.get(aname)
     }
-    
-    
+
+
     def String getDstPortName(Edge e) {
     	return this.portnames.get(this.channelNames.get(e)).get("dst")
     }
@@ -215,6 +215,16 @@ class DataflowSupport {
     	return this.portnames.get(this.channelNames.get(e)).get("src")
     }
 
+	def isProperActor(String a) {
+		return ! (this.inputNames.contains(a) || this.outputNames.contains(a))
+	}
 
-	
+	def setOfInputActors() {
+		return this.inputNames
+	}
+
+	def setOfOutputActors() {
+		return this.outputNames
+	}
+
 }
