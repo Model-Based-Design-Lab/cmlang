@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: info.computationalmodeling.lang.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: info.computationalmodeling.lang.ide
+Bundle-Vendor: Eindhoven University of Technology
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: info.computationalmodeling.lang.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: info.computationalmodeling.lang,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.apache.commons.math3;bundle-version="3.6.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: info.computationalmodeling.lang.ide.contentassist.antlr,
+ info.computationalmodeling.lang.ide.contentassist.antlr.internal

@@ -13,7 +13,8 @@ import info.computationalmodeling.lang.dataflow.EdgeAnnotation
 import java.util.HashMap
 import java.util.ArrayList
 import java.util.Map
-import org.apache.commons.math.fraction.Fraction
+//import org.apache.commons.math.fraction.Fraction
+import org.apache.commons.math3.fraction.Fraction
 
 /**
  * This class contains custom validation rules. 
