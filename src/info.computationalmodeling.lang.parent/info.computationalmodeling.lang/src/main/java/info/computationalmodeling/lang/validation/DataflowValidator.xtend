@@ -13,17 +13,16 @@ import info.computationalmodeling.lang.dataflow.EdgeAnnotation
 import java.util.HashMap
 import java.util.ArrayList
 import java.util.Map
-//import org.apache.commons.math.fraction.Fraction
 import org.apache.commons.math3.fraction.Fraction
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class DataflowValidator extends AbstractDataflowValidator {
-	
-	
+
+
 	def Set<String> setOfActors(DataflowModel m){
 		var result = new HashSet<String>;
 		for(Edge e: m.edges) {
@@ -32,7 +31,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 		}
 		return result
 	}
-	
+
 	def Set<String> getConnectedActors(DataflowModel m, Set<String> actors){
 		var result = new HashSet<String>;
 		for(Edge e: m.edges) {
@@ -43,15 +42,15 @@ class DataflowValidator extends AbstractDataflowValidator {
 		}
 		return result
 	}
-	
-	
+
+
 	def findOneOutside(Set<String> sA, Set<String> sB){
 		for (b: sB) {
 			if (! sA.contains(b)) return b
 		}
 		return null
 	}
-	
+
 	// check if the graph is connected
 	// returns null if it is connected
 	// returns a pair of actors names that are not connected
@@ -67,7 +66,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 			var newConnActors = getConnectedActors(m, connActors)
 			prevConnSize = connSize
 			connSize = newConnActors.length
-			connActors = newConnActors								
+			connActors = newConnActors
 		}
 		val actor2 = findOneOutside(connActors, actors)
 		if (actor2 === null) {
@@ -75,18 +74,18 @@ class DataflowValidator extends AbstractDataflowValidator {
 		}
 		return new Pair<String, String>(actor1, actor2)
 	}
-	
+
 	def String doubleChannelName(DataflowModel m) {
 		var channels = new HashSet<String>;
 		for(Edge e: m.edges) {
 			for(EdgeAnnotation a: e.specs.annotations) {
 				if (a.name !== null) {
-					if (channels.contains(a.name)) 
+					if (channels.contains(a.name))
 					{
 						return a.name
 					}
 					else {
-						channels.add(a.name)		
+						channels.add(a.name)
 					}
 				}
 			}
@@ -102,7 +101,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 		}
 		return 1
 	}
-	
+
 	def int getConsRate(Edge e) {
 		for (a: e.specs.annotations) {
 			if (a.consrate != 0) {
@@ -113,7 +112,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 	}
 
 	def String oppositeActor(Edge e, String act) {
-		if (e.srcact.name == act) 
+		if (e.srcact.name == act)
 		{
 			return e.dstact.name
 		}
@@ -147,7 +146,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 				currAct=""
  			}
 		}
-		
+
 		// make cycle out of srcList, dstList and e
 		var result = new ArrayList<Edge>()
 		for (e: srcList) {
@@ -160,14 +159,14 @@ class DataflowValidator extends AbstractDataflowValidator {
 		return result
 	}
 
-	def edgeString(Edge e) { 
+	def edgeString(Edge e) {
 		val direction = "edge from " + e.srcact.name + ' to ' + e.dstact.name
 		for (a: e.specs.annotations) {
 			if (a.name !== null) {
 				return direction + ' named ' + a.name
 			}
 		}
-		return 'unnamed ' + direction 
+		return 'unnamed ' + direction
 	}
 
 
@@ -184,34 +183,34 @@ class DataflowValidator extends AbstractDataflowValidator {
 
 		// keep track of rate-labeled actors
 		var labeledActors = new HashMap<String, Fraction>()
-		
+
 		// keep track of the edge that determined its rate
 		var backTrackEdge = new HashMap<String, Edge>()
-		
+
 		// label first actor
 		val act = m.edges.get(0).srcact.name
 		labeledActors.put(act, new Fraction(1,1))
-		
+
 		// repeat until no new actor is labeled
 		var newLabels = true
 		while(newLabels) {
 			newLabels = false
 			for (e: m.edges) {
-				if (labeledActors.containsKey(e.srcact.name) && ! labeledActors.containsKey(e.dstact.name)) 
+				if (labeledActors.containsKey(e.srcact.name) && ! labeledActors.containsKey(e.dstact.name))
 				{
 					// compute rate of dst
 					labeledActors.put(e.dstact.name, labeledActors.get(e.srcact.name).multiply(new Fraction(getProdRate(e), getConsRate(e))))
 					backTrackEdge.put(e.dstact.name, e)
 					newLabels = true
 				}
-				if (!labeledActors.containsKey(e.srcact.name) && labeledActors.containsKey(e.dstact.name)) 
+				if (!labeledActors.containsKey(e.srcact.name) && labeledActors.containsKey(e.dstact.name))
 				{
 					// compute rate of src
 					labeledActors.put(e.srcact.name, labeledActors.get(e.dstact.name).multiply(new Fraction(getConsRate(e), getProdRate(e))))
 					backTrackEdge.put(e.srcact.name, e)
 					newLabels = true
 				}
-				if (labeledActors.containsKey(e.srcact.name) && labeledActors.containsKey(e.dstact.name)) 
+				if (labeledActors.containsKey(e.srcact.name) && labeledActors.containsKey(e.dstact.name))
 				{
 					// check consistency
 					val consDstRate = labeledActors.get(e.srcact.name).multiply(new Fraction(getProdRate(e), getConsRate(e)))
@@ -220,8 +219,8 @@ class DataflowValidator extends AbstractDataflowValidator {
 			}
 		}
 	}
-	
-	
+
+
 	public static val INVALID_GRAPH = 'disconnectedGraph'
 	public static val INVALID_NAME = 'invalidName'
 
@@ -231,7 +230,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 	def checkChannelNamesUniqe(DataflowModel m) {
 		val chan = doubleChannelName(m)
 		if (chan !== null) {
-			error('The graph contains multiple channels named ' + chan + '.', 
+			error('The graph contains multiple channels named ' + chan + '.',
 					DataflowPackage.Literals.DATAFLOW_MODEL__EDGES,
 					INVALID_NAME)
 		}
@@ -243,7 +242,7 @@ class DataflowValidator extends AbstractDataflowValidator {
 	def checkGraphIsConnected(DataflowModel m) {
 		val conn = checkConnected(m)
 		if (conn !== null) {
-			warning('The graph is not connected. There is no path between ' + conn.key +' and ' + conn.value + '.', 
+			warning('The graph is not connected. There is no path between ' + conn.key +' and ' + conn.value + '.',
 					DataflowPackage.Literals.DATAFLOW_MODEL__EDGES,
 					INVALID_GRAPH)
 		}
@@ -255,11 +254,11 @@ class DataflowValidator extends AbstractDataflowValidator {
 		val cycle = checkConsistency(m)
 		if (cycle !== null) {
 			val inconsistentCycle = cycleString(cycle)
-			warning('The graph is not consistent. There is an inconsistent cycle: ' + inconsistentCycle + '.', 
+			warning('The graph is not consistent. There is an inconsistent cycle: ' + inconsistentCycle + '.',
 					DataflowPackage.Literals.DATAFLOW_MODEL__EDGES,
 					INVALID_GRAPH)
 		}
 	}
 
-	
+
 }
