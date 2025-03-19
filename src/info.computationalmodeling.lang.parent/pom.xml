@@ -24,7 +24,7 @@
     <modules>
         <module>info.computationalmodeling.lang</module>
         <module>info.computationalmodeling.lang.ide</module>
-        <module>info.computationalmodeling.lang.codegen.compiler</module>
+        <module>info.computationalmodeling.lang.codegen</module>
         <module>info.computationalmodeling.lang.lsp</module>
         <module>info.computationalmodeling.lang.target</module>
     </modules>

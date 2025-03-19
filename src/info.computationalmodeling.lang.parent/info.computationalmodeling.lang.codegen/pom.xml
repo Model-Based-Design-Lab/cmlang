@@ -7,12 +7,12 @@
         <artifactId>info.computationalmodeling.lang.parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>info.computationalmodeling.lang.codegen.compiler</artifactId>
+    <artifactId>info.computationalmodeling.lang.codegen</artifactId>
     <packaging>jar</packaging>
 
     <!-- the mainClass is put in the "cm-generators" scripts -->
     <properties>
-        <mainClass>info.computationalmodeling.lang.codegen.compiler.ComputationalModelingCompiler</mainClass>
+        <mainClass>info.computationalmodeling.lang.codegen.ComputationalModelingCompiler</mainClass>
     </properties>
 
     <dependencies>
@@ -28,7 +28,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId></groupId>
             <artifactId>info.computationalmodeling.lang</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -41,7 +41,29 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/generated/path/to/package</directory>
+                <includes>
+                    <include>Dataflow.xtextbin</include>
+                </includes>
+                <targetPath>target/package</targetPath>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>info.computationalmodeling.codegen.ComputationalModelingCompiler</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -60,25 +82,6 @@
                             <!-- See: https://dev.eclipse.org/mhonarc/lists/tycho-user/msg05080.html -->
                             <excludeScope>system</excludeScope>
                             <includeScope>runtime</includeScope>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>dist</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>cm-gen-${project.version}</finalName>
                         </configuration>
                     </execution>
                 </executions>

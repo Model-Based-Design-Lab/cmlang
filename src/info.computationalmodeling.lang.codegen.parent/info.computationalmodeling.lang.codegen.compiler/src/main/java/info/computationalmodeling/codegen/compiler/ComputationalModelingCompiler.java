@@ -1,4 +1,4 @@
-package info.computationalmodeling.lang.codegen.compiler;
+package info.computationalmodeling.lang.codegen;
 
 import java.io.File;
 import java.nio.file.Files;
