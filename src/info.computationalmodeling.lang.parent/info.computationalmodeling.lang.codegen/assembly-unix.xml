@@ -1,28 +1,19 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
-    <id>dist</id>
+    <id>unix</id>
     <formats>
         <format>zip</format>
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/lib</directory>
+            <directory>target/lib</directory>
             <outputDirectory>lib</outputDirectory>
         </fileSet>
     </fileSets>
     <files>
         <file>
-            <source>${project.build.directory}/info.computationalmodeling.lang.codegen-${project.version}.jar</source>
-            <outputDirectory>lib</outputDirectory>
-        </file>
-        <file>
-            <source>cm-generators.bat</source>
-            <outputDirectory>bin</outputDirectory>
-            <filtered>true</filtered>
-        </file>
-        <file>
-            <source>cm-generators</source>
+            <source>cm-codegen</source>
             <outputDirectory>bin</outputDirectory>
             <filtered>true</filtered>
         </file>

@@ -17,7 +17,7 @@
 @if "%DEBUG%" == "" @echo off
 @rem ##########################################################################
 @rem
-@rem  cm-language-server-stdio startup script for Windows
+@rem  cm-codegen startup script for Windows
 @rem
 @rem ##########################################################################
 
@@ -85,8 +85,9 @@ set CMD_LINE_ARGS=%*
 set CLASSPATH=%APP_HOME%\\lib\\${project.artifactId}-${project.version}.jar
 
 
-@rem Execute cm-generators
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CM_LANGUAGE_SERVER_STDIO_OPTS%  -classpath "%CLASSPATH%" ${mainClass} %CMD_LINE_ARGS%
+@rem Execute cm-codegen
+@REM "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CM_LANGUAGE_SERVER_STDIO_OPTS%  -classpath "%CLASSPATH%" ${mainClass} %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CM_LANGUAGE_SERVER_STDIO_OPTS%  -classpath "%CLASSPATH%" info.computationalmodeling.lang.codegen.ComputationalModelingCompiler %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell

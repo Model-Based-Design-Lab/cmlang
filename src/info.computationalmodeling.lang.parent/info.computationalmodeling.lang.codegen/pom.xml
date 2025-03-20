@@ -61,6 +61,44 @@
                 <version>3.1.2</version>
                 <executions>
                     <execution>
+                        <id>generate-classpath-win</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                        <configuration>
+                            <prefix>%APP_HOME%\\lib</prefix>
+                            <fileSeparator>\\</fileSeparator>
+                            <pathSeparator>;</pathSeparator>
+                            <outputFile>${project.build.directory}/classpath-win.txt</outputFile>
+                            <outputFilterFile>true</outputFilterFile>
+                            <!-- The lines below are aimed at telling maven
+                                NOT TO COPY tycho dependencies. Do not remove those! -->
+                            <!-- See: https://dev.eclipse.org/mhonarc/lists/tycho-user/msg05080.html -->
+                            <excludeScope>system</excludeScope>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-classpath-unix</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                        <configuration>
+                            <prefix>$APP_HOME/lib</prefix>
+                            <fileSeparator>/</fileSeparator>
+                            <pathSeparator>:</pathSeparator>
+                            <outputFile>${project.build.directory}/classpath-unix.txt</outputFile>
+                            <outputFilterFile>true</outputFilterFile>
+                            <!-- The lines below are aimed at telling maven
+                                NOT TO COPY tycho dependencies. Do not remove those! -->
+                            <!-- See: https://dev.eclipse.org/mhonarc/lists/tycho-user/msg05080.html -->
+                            <excludeScope>system</excludeScope>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-dependencies</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -73,6 +111,44 @@
                             <!-- See: https://dev.eclipse.org/mhonarc/lists/tycho-user/msg05080.html -->
                             <excludeScope>system</excludeScope>
                             <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>win</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-win.xml</descriptor>
+                            </descriptors>
+                            <finalName>cm-codegen-${project.version}</finalName>
+                            <filters>
+                                <filter>${project.build.directory}/classpath-win.txt</filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unix</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-unix.xml</descriptor>
+                            </descriptors>
+                            <finalName>cm-codegen-${project.version}</finalName>
+                            <filters>
+                                <filter>${project.build.directory}/classpath-unix.txt</filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
