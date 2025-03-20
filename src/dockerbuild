@@ -1,11 +1,8 @@
 #!/bin/bash
 
 cd ./info.computationalmodeling.lang.parent
-./gradlew installdist
-cp -R ./info.computationalmodeling.lang.ide/build/install/info.computationalmodeling.lang.ide /output/
-
-cd ../info.computationalmodeling.lang.codegen.parent
-./gradlew installdist
-cp -R ./info.computationalmodeling.lang.codegen.compiler/build/install/info.computationalmodeling.lang.codegen.compiler /output/
+mvn install
+cp -R ./info.computationalmodeling.lang.lsp/target/cm-lsp-1.0.0-SNAPSHOT-*.zip /output/
+cp -R ./info.computationalmodeling.lang.codegen/target/cm-codegen*.zip /output/
 
 

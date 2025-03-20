@@ -7,15 +7,29 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import info.computationalmodeling.lang.FiniteStateAutomataRuntimeModule
+import com.google.inject.Guice
 
 /**
  * Generates code from your model files on save.
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class FiniteStateAutomataGenerator extends AbstractGenerator {
 
+    com.google.inject.Injector injector = Guice.createInjector(new FiniteStateAutomataRuntimeModule());
+	FiniteStateAutomataGeneratorGraphviz genA = new FiniteStateAutomataGeneratorGraphviz();
+	//FiniteStateAutomataGeneratorB genB = new FiniteStateAutomataGeneratorB();
+
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		System.out.println("There are not code generation transformations defined.")
+
+		// generate graphviz image
+		injector.injectMembers(genA);
+		genA.doGenerate(resource, fsa, context);
+
+		// then some other generator perhaps
+	    // injector.injectMembers(genB);
+		//genB.doGenerate(resource, fsa, context);
 	}
+
 }

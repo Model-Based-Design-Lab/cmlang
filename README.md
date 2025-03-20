@@ -25,7 +25,7 @@ It further contains a server for [the Language Server Protocol](https://microsof
 
 ### Code Generation Tools
 
-`src/info.computationalmodeling.lang.codegen.parent`
+`src/info.computationalmodeling.lang.codegen`
 
 This project contains a code generation tool for the various languages defined in the LSP project.
 
@@ -51,20 +51,20 @@ The software can be built from the command line or using the provided docker ima
 
 ### Command line build
 
-Building from the command line requires a recent [Java JDK](https://adoptium.net/) and [Gradle](https://gradle.org/install/) to be installed.
+Building from the command line requires a recent [Java JDK](https://adoptium.net/) and [Maven](https://maven.apache.org/) to be installed.
 
 ``` shell
 cd src\info.computationalmodeling.lang.parent\
-./gradlew installDist
-cd ..\info.computationalmodeling.lang.codegen.parent\
-./gradlew installDist
+mvn install
 ```
 
-The built language server can be found in:
-`src/info.computationalmodeling.lang.parent/info.computationalmodeling.lang.ide/build/install/info.computationalmodeling.lang.ide`
+The built language server, for Windows or Unix, respectively, can be found in:
+`src/info.computationalmodeling.lang.parent/info.computationalmodeling.lang.lsp/target/cm-lsp-1.0.0-SNAPSHOT-win.zip`
+`src/info.computationalmodeling.lang.parent/info.computationalmodeling.lang.lsp/target/cm-lsp-1.0.0-SNAPSHOT-unix.zip`
 
 The built code generator can be found in:
-`src/info.computationalmodeling.lang.codegen.parent/info.computationalmodeling.lang.codegen.compiler/build/install/info.computationalmodeling.lang.codegen.compiler`
+`src/info.computationalmodeling.lang.codegen.parent/info.computationalmodeling.lang.codegen/target/cm-codegen-1.0.0-SNAPSHOT-win.zip`
+`src/info.computationalmodeling.lang.codegen.parent/info.computationalmodeling.lang.codegen/target/cm-codegen-1.0.0-SNAPSHOT-unix.zip`
 
 ### Building with Docker
 
