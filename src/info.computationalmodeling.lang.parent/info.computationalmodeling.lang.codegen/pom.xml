@@ -28,7 +28,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId></groupId>
+            <groupId>info.computationalmodeling.lang</groupId>
             <artifactId>info.computationalmodeling.lang</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
