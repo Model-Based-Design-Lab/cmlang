@@ -79,7 +79,7 @@ public class ComputationalModelingCompiler {
 		}
 
 		Injector injector = null;
-		
+
 		switch (ext)
 		{
 		case "SDF":
@@ -107,7 +107,7 @@ public class ComputationalModelingCompiler {
 			injector = new LinearTemporalLogicStandaloneSetup().createInjectorAndDoEMFRegistration();
 			break;
 		}
-		
+
 		if (injector != null) {
 			ComputationalModelingCompiler comp = injector.getInstance(ComputationalModelingCompiler.class);
 			comp.runGenerator(filename, outputdir);

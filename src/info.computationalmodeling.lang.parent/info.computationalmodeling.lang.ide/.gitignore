@@ -3,4 +3,4 @@ bin
 build
 src/main/xtend-gen
 src/main/xtext-gen
-
+src-gen

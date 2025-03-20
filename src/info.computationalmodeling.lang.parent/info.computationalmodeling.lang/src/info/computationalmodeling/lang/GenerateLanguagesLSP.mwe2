@@ -6,7 +6,7 @@ import org.eclipse.xtext.xtext.generator.model.project.*
 var rootPath = ".."
 
 Workflow {
-	
+
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -15,7 +15,7 @@ Workflow {
 				genericIde = {
 					enabled = true
 				}
-				mavenLayout = true
+				mavenLayout = false
 			}
 			code = {
 				encoding = "UTF-8"
