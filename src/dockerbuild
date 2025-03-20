@@ -1,6 +1,10 @@
 #!/bin/bash
 
 cd ./info.computationalmodeling.lang.parent
+
+java --version
+mvn --version
+
 mvn install
 cp -R ./info.computationalmodeling.lang.lsp/target/cm-lsp-1.0.0-SNAPSHOT-*.zip /output/
 cp -R ./info.computationalmodeling.lang.codegen/target/cm-codegen*.zip /output/
