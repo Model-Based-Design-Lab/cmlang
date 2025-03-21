@@ -10,7 +10,13 @@ Build the docker image. In the `src` folder run:
 docker build . -t cmlang
 ```
 
-Run the image. The results are visible in the mounted volume `/output`.
+Run the docker image using a mounted volume referred to as `<volume-name>` in the command below.
+
+``` shell
+docker run -v <volume-name>:/output cmlang
+```
+
+The results are visible in the mounted volume `/output`.
 
 ### From the Command Line
 
@@ -18,23 +24,20 @@ Run the image. The results are visible in the mounted volume `/output`.
 
   ``` bash
   cd <inside the parent project>
-  ./gradlew installDist
+  mvn install
   ```
 
 ### In Eclipse
 
-TODO: update
+Ensure that ou have the [Maven Nature support](https://marketplace.eclipse.org/free-tagging/nature_orgeclipsem2ecoremaven2nature) installed in Eclipse
 
 - Open workspace in Eclipse
-- Import the parent project as an Existing Gradle Project
-- On project `org.xtext.computationalmodelling.parent`, right-click and select `Gradle`->`Refresh Gradle Project`. Wait for Eclipse to complete the process.
-- build either in a terminal or in Eclipse
+- Import the parent project as an Existing Maven Project
+- On project `org.xtext.computationalmodelling.parent`, right-click and select `Run as `->`Maven install`. Wait for Eclipse to complete the process.
 
-- in Eclipse, in the Gradle Task View (can be opened by `Window=>Show View=>Other` then `Gradle=>Gradle Tasks`), run the `distribution/installDist` task of the `org.xtext.computationalmodelling.parent`
 - the result of the build are two executable Java programs
 
   - One is the LSP server for the three languages.
-    It is located in the directory named `cm-xtext-server` located in `\tools\dsl\eclipse-workspace\org.xtext.computationalmodelling.parent\org.xtext.computationalmodelling.lsp\build\install`
+    It is packaged in platform specific zip archives named `cm-lsp-1.0.0-SNAPSHOT-win.zip` and `cm-lsp-1.0.0-SNAPSHOT-unix.zip` located in `info.computationalmodelling.lang.parent\info.computationalmodelling.lang.lsp\target`
   - The other is a code generator tool.
-    It is located in the directory named `cm-codegen` located in `\tools\dsl\eclipse-workspace\org.xtext.computationalmodelling.parent\org.xtext.computationalmodelling.ide\build\install`
-- Copy the folders `cm-xtext-server` and `cm-codegen` into to folder `\tools\vscode-extension-computationalmodelling\xtextbin`
+    It is packaged in platform specific zip archives named `cm-codegen-1.0.0-SNAPSHOT-win.zip` and `cm-codegen-1.0.0-SNAPSHOT-unix.zip` located in `info.computationalmodelling.lang.parent\info.computationalmodelling.lang.codegen\target`
