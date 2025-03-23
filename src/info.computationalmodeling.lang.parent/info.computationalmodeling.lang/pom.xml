@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>info.computationalmodeling.lang</artifactId>
-    <packaging>eclipse-plugin</packaging>
+    <packaging>jar</packaging>
 
     <build>
         <plugins>
@@ -18,6 +18,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
+						<?m2e ignore?>
                         <id>mwe2Launcher</id>
                         <phase>generate-sources</phase>
                         <goals>
@@ -28,7 +29,7 @@
                 <configuration>
                     <mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
                     <arguments>
-                        <argument>/${project.basedir}/src/info/computationalmodeling/lang/GenerateLanguagesLSP.mwe2</argument>
+                        <argument>/${project.basedir}/src/main/xtend/info/computationalmodeling/lang/GenerateLanguagesLSP.mwe2</argument>
                         <argument>-p</argument>
                         <argument>rootPath=/${project.basedir}/..</argument>
                     </arguments>
@@ -36,32 +37,30 @@
                     <includePluginDependencies>true</includePluginDependencies>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads><!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=475098#c3 -->
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.eclipse.xtext</groupId>
-                        <artifactId>xtext-antlr-generator</artifactId>
-                        <version>2.1.1</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.xtend</groupId>
                 <artifactId>xtend-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
                     <filesets combine.children="append">
                         <fileset>
-                            <directory>${basedir}/../info.computationalmodeling.lang/src-gen/</directory>
+                            <directory>${basedir}/../info.computationalmodeling.lang/src/main/xtext-gen/</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/../info.computationalmodeling.lang.ide/src-gen/</directory>
+                            <directory>${basedir}/../info.computationalmodeling.lang/src/test/xtext-gen/</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/../info.computationalmodeling.lang.ide/src/main/xtext-gen/</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
@@ -72,41 +71,79 @@
                     </filesets>
                 </configuration>
             </plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>add-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-source</goal>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/xtext-gen</source>
+							</sources>
+							<resources>
+								<resource>
+									<directory>src/main/xtext-gen</directory>
+									<excludes>
+										<exclude>**/*.java</exclude>
+										<exclude>**/*.g</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-source</goal>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/test/xtext-gen</source>
+							</sources>
+							<resources>
+								<resource>
+									<directory>src/test/xtext-gen</directory>
+									<excludes>
+										<exclude>**/*.java</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>jar-with-ecore-model.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.codehaus.mojo
-                                        </groupId>
-                                        <artifactId>
-                                            exec-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.2.1,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>java</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
     <dependencies>
         <dependency>
@@ -114,5 +151,53 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.testing</artifactId>
+			<version>${xtextVersion}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.testing</artifactId>
+			<version>${xtextVersion}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xtext.generator</artifactId>
+			<version>${xtextVersion}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>xtext-antlr-generator</artifactId>
+			<optional>true</optional>
+		</dependency>
     </dependencies>
 </project>

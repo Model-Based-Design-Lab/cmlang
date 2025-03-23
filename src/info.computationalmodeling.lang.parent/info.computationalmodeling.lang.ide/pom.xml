@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>info.computationalmodeling.lang.ide</artifactId>
-    <packaging>eclipse-plugin</packaging>
+    <packaging>jar</packaging>
 
     <build>
         <plugins>
