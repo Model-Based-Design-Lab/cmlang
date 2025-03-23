@@ -15,17 +15,37 @@
             <plugin>
                 <groupId>org.eclipse.xtend</groupId>
                 <artifactId>xtend-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>src/main/xtend-gen/</outputDirectory>
-                </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>add-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-source</goal>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/xtext-gen</source>
+							</sources>
+							<resources>
+								<resource>
+									<directory>src/main/xtext-gen</directory>
+									<excludes>
+										<exclude>**/*.java</exclude>
+										<exclude>**/*.g</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
     <dependencies>
@@ -34,5 +54,20 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>info.computationalmodeling.lang</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.ide</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.ide</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
     </dependencies>
 </project>
