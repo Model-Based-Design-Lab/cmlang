@@ -20,12 +20,18 @@ class FiniteStateAutomataParsingTest {
 	
 	@Test
 	def void loadModel() {
-// TODO: add test later
-//		val result = parseHelper.parse('''
-//			Hello Xtext!
-//		''')
-//		Assertions.assertNotNull(result)
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val result = parseHelper.parse('''finite state automaton WLAN {
+    S1 initial; final -- s --> S1
+    S1 --- h ---> S2
+    S2 --- p ---> S3
+    S3 --- p ---> S3
+    S3 --- c ---> S1
+
+    S2 --- # ---> S1
+    S3 --- # ---> S1
+}''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }

@@ -20,12 +20,11 @@ class RegularExpressionsParsingTest {
 	
 	@Test
 	def void loadModel() {
-// TODO: add test later
-//		val result = parseHelper.parse('''
-//			Hello Xtext!
-//		''')
-//		Assertions.assertNotNull(result)
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val result = parseHelper.parse('''regular expression MyRegex = 
+    (d* + f*)* + \o + \e + @AB
+where AB = a + b''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }

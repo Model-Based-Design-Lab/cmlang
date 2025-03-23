@@ -20,12 +20,18 @@ class MaxPlusMatrixParsingTest {
 	
 	@Test
 	def void loadModel() {
-// TODO: add test later
-//		val result = parseHelper.parse('''
-//			Hello Xtext!
-//		''')
-//		Assertions.assertNotNull(result)
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val result = parseHelper.parse('''max-plus model MPModel:
+matrices
+A =
+[
+	[ -inf   -inf  -10  7 15]
+	[ 1 -inf -inf -inf 3 ]
+    [-inf 3 -inf -inf -inf]
+    [-inf -4 5 -inf 20]
+    [-inf -inf -inf -inf -1]
+]''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }

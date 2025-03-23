@@ -20,12 +20,15 @@ class MarkovChainsParsingTest {
 	
 	@Test
 	def void loadModel() {
-// TODO: add test later
-//		val result = parseHelper.parse('''
-//			Hello Xtext!
-//		''')
-//		Assertions.assertNotNull(result)
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val result = parseHelper.parse('''markov chain Model {
+    A[p: 0.9] -- 1/2  -> B
+    A -- 1/2  -> A
+    B -- 1 -> C
+    C -- 1/2 -> C
+    C -- 1/2 -> A
+}''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }

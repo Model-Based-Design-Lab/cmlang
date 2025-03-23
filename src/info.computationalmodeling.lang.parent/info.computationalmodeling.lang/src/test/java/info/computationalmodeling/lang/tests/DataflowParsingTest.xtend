@@ -20,19 +20,16 @@ class DataflowParsingTest {
 	
 	@Test
 	def void loadModel() {
-// TODO test fails fix later
-//		val result = parseHelper.parse('''
-//dataflow graph Model {
-//        A [execution time: 1] -- production rate: 2; name: c --> B [execution time: 2] 
-//    	A -- initial tokens: 1 --> A 
-//	    B -- initial tokens: 2 --> B
-//    	B ----> C [execution time: 5]
-//	    C ----> Y [execution time: 5]
-//    	Y -- initial tokens: 4; consumption rate: 2 --> A 
-//} 
-//		''')
-//		Assertions.assertNotNull(result)
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val result = parseHelper.parse('''dataflow graph Model {
+        A [execution time: 1] -- production rate: 2; name: c --> B [execution time: 2] 
+    	A -- initial tokens: 1 --> A 
+	    B -- initial tokens: 2 --> B
+    	B ----> C [execution time: 5]
+	    C ----> Y [execution time: 5]
+    	Y -- initial tokens: 4; consumption rate: 2 --> A 
+}''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }
