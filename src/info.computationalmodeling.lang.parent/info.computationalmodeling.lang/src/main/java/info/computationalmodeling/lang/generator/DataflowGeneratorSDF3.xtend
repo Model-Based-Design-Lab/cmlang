@@ -50,8 +50,8 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 			<applicationGraph name="«m.name»">
 				<sdf name="«m.name»" type="«m.name»">
 					«this.compileActorList(m, ds)»
-					«this.compileChannelList(m, ds)»
 					«this.compileInputOutputList(m, ds)»
+					«this.compileChannelList(m, ds)»
 				</sdf>
 				<sdfProperties>
 					«this.compileActorProperties(m, ds)»
@@ -74,13 +74,16 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 
 	def compileInputOutputList(DataflowModel m, DataflowSupport ds) '''
 		«FOR a: ds.setOfInputActors()»
-			<input name="«a»"/>
+			<input name="«a»" type="«a»">
+				«this.compilePortsOfActor(a, ds)»
+			</input>
 		«ENDFOR»
 		«FOR a: ds.setOfOutputActors()»
-			<output name="«a»"/>
+			<output name="«a»" type="«a»">
+				«this.compilePortsOfActor(a, ds)»
+			</output>
 		«ENDFOR»
     '''
-
 
     def compilePortsOfActor(String a, DataflowSupport ds) '''
     	«FOR p: ds.getPortsOfActor(a).entrySet»
@@ -94,14 +97,14 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 
 	def channelSrcSpec(DataflowSupport ds, Edge e) {
 		if (ds.channelHasInputSrc(e)) {
-			return "srcInput=\""+e.srcact.name+"\""
+			return "srcPort=\"" + ds.getSrcPortName(e) + "\" srcInput=\""+ e.srcact.name+ "\""
 		}
 		return "srcPort=\"" + ds.getSrcPortName(e) + "\" srcActor=\""+ e.srcact.name+ "\""
 	}
 
 	def channelDstSpec(DataflowSupport ds, Edge e) {
 		if (ds.channelHasOutputDst(e)) {
-			return "dstOutput=\""+e.dstact.name+"\""
+			return "dstPort=\"" + ds.getDstPortName(e) + "\" dstOutput=\""+ e.dstact.name+ "\""
 		}
 		return "dstPort=\"" + ds.getDstPortName(e) + "\" dstActor=\""+ e.dstact.name+ "\""
 	}
@@ -126,11 +129,13 @@ class DataflowGeneratorSDF3 extends AbstractGenerator {
 
 	def compileActorProperties(DataflowModel m, DataflowSupport ds)'''
 		«FOR a: ds.setOfActors(m)»
+			«IF ds.isProperActor(a)»
 			<actorProperties actor="«a»">
 				<processor type="p1" default="true">
 				<executionTime time="«ds.getExecutionTimeValue(a)»"/>
 				</processor>
 			</actorProperties>
+			«ENDIF»
 		«ENDFOR»
 	'''
 
